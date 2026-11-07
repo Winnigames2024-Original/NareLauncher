@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NareLauncher — лаунчер Minecraft</title>
+<meta name="description" content="NareLauncher — лаунчер Minecraft: любые версии и свои сборки, аккаунты и скины, живая главная и автообновление. Ставится в пару кликов, без прав администратора.">
+<meta property="og:title" content="NareLauncher">
+<meta property="og:description" content="Любые версии и свои сборки, аккаунты и скины, автообновление. Ставится в пару кликов.">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+
+<header class="top">
+  <a class="mark" href="#"><span class="mark-dot" aria-hidden="true"></span>NareLauncher</a>
+  <nav class="top-nav">
+    <a href="#features">Возможности</a>
+    <a href="#install">Установка</a>
+    <a href="#faq">Вопросы</a>
+  </nav>
+  <a class="top-get" href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/nareinstaller/NareInstaller.exe">Скачать</a>
+</header>
+
+<main>
+
+  <!-- ------------------------------------------------------------- hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Windows · бесплатно</p>
+      <h1>Лаунчер, который<br>не спорит с вами.</h1>
+      <p class="lead">
+        Любые версии Minecraft и свои сборки, несколько аккаунтов, скины и
+        плащи, живая главная вместо пустого окна. Ставится в пару кликов,
+        права администратора не нужны, игра остаётся в привычной папке
+        <code>%APPDATA%\.minecraft</code>.
+      </p>
+
+      <div class="cta">
+        <a class="btn btn-main" id="dl-main"
+           href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/nareinstaller/NareInstaller.exe">
+          <span>Скачать установщик</span>
+          <small id="dl-main-meta">NareInstaller.exe · поставит лаунчер и ярлыки</small>
+        </a>
+        <a class="btn" id="dl-plain"
+           href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/narelauncher/NareLauncher.exe">
+          <span>Только лаунчер</span>
+          <small id="dl-plain-meta">версия загружается…</small>
+        </a>
+      </div>
+
+      <p class="note">
+        Установщик умеет ставить и онлайн — тогда он скачает свежую версию, —
+        и оффлайн, той копией, что зашита внутрь. Рядом с лаунчером он кладёт
+        <code>update.exe</code>, который дальше обновляет всё сам.
+      </p>
+    </div>
+
+    <!-- окно лаунчера, нарисованное вёрсткой -->
+    <div class="hero-art" aria-hidden="true">
+      <div class="app">
+        <div class="app-bar">
+          <span class="app-title">NareLauncher</span>
+          <span class="app-dots"><i></i><i></i><i class="x"></i></span>
+        </div>
+        <div class="app-body">
+          <nav class="side">
+            <span class="on">Главная</span>
+            <span>Версии</span>
+            <span>Серверы</span>
+            <span>Скин</span>
+            <span>Вещи</span>
+            <span>Настройки</span>
+          </nav>
+          <div class="stage">
+            <!-- схематичная фигурка, а не чей-то скин -->
+            <div class="figure">
+              <i class="head"></i>
+              <i class="body"></i>
+              <i class="arm l"></i>
+              <i class="arm r"></i>
+              <i class="leg l"></i>
+              <i class="leg r"></i>
+            </div>
+            <div class="stage-foot">
+              <div class="pick"><b>1.21.4</b><span>Forge</span></div>
+              <div class="play">ИГРАТЬ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------- features -->
+  <section id="features" class="band">
+    <h2>Что внутри</h2>
+    <p class="band-lead">
+      Ничего лишнего на экране и ничего спрятанного в подменю: всё, что
+      нужно перед запуском, лежит на виду.
+    </p>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Любые версии</h3>
+        <p>
+          Релизы, снапшоты, старые версии и свои сборки с модами. Нужное
+          докачивается само: библиотеки, ресурсы, Java — ничего отдельно
+          ставить не надо.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Аккаунты и скины</h3>
+        <p>
+          Несколько аккаунтов с переключением в один клик, свой скин и
+          предпросмотр на модели — видно, как он сядет, ещё до запуска.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Живая главная</h3>
+        <p>
+          На главной стоит ваш персонаж во весь экран: смотрит за курсором,
+          моргает, играет свои анимации и отмахивается, если его долго
+          тыкать. Кнопки и меню — поверх него.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Вещи</h3>
+        <p>
+          Вкладка с 3D-плащами и своими вещами: можно надеть готовое или
+          собрать собственное и посмотреть на персонаже. Это оформление
+          внутри лаунчера — в самой игре плащи выдаёт Mojang.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Серверы</h3>
+        <p>
+          Список серверов с проверкой доступности и игроков онлайн — видно,
+          куда есть смысл заходить, не запуская игру.
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Понятные ошибки</h3>
+        <p>
+          Если игра не запустилась или сервер не отвечает, лаунчер
+          показывает отдельное окно с тем, что именно случилось, и кнопкой
+          повторить. Если мешает VPN — предложит его выключить.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------- install -->
+  <section id="install" class="band">
+    <h2>Установка</h2>
+
+    <ol class="steps">
+      <li>
+        <h3>Скачайте установщик</h3>
+        <p>
+          <a href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/nareinstaller/NareInstaller.exe">NareInstaller.exe</a>
+          — один файл, ничего распаковывать не нужно.
+        </p>
+      </li>
+      <li>
+        <h3>Выберите папку</h3>
+        <p>
+          По умолчанию <code>%LOCALAPPDATA%\Programs\NareLauncher</code> — туда
+          можно ставить без прав администратора. Папку можно поменять прямо в
+          окне установщика.
+        </p>
+      </li>
+      <li>
+        <h3>Запускайте с ярлыка</h3>
+        <p>
+          Ярлыки появятся на рабочем столе и в меню «Пуск». Дальше лаунчер
+          обновляется сам: рядом с ним лежит <code>update.exe</code>, он
+          проверяет новую версию при запуске.
+        </p>
+      </li>
+    </ol>
+
+    <p class="note">
+      Удаляется как обычная программа — через «Установка и удаление
+      программ». Настройки, аккаунты и логи лежат отдельно, в
+      <code>%APPDATA%\NareLauncher</code>, и при переустановке не теряются.
+    </p>
+  </section>
+
+  <!-- -------------------------------------------------------------- faq -->
+  <section id="faq" class="band">
+    <h2>Вопросы</h2>
+
+    <div class="faq">
+      <details>
+        <summary>Нужна ли отдельно Java?</summary>
+        <p>
+          Нет. Лаунчер сам подберёт и скачает подходящую Java под выбранную
+          версию игры.
+        </p>
+      </details>
+
+      <details>
+        <summary>Куда ставится сама игра?</summary>
+        <p>
+          В обычную папку <code>%APPDATA%\.minecraft</code>. Миры, скриншоты
+          и ресурспаки остаются на месте, даже если лаунчер потом удалить.
+        </p>
+      </details>
+
+      <details>
+        <summary>Можно без установщика?</summary>
+        <p>
+          Да, берите
+          <a href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/narelauncher/NareLauncher.exe">NareLauncher.exe</a>
+          и запускайте откуда угодно. Только тогда не будет ярлыков и
+          автообновления — обновлять придётся руками.
+        </p>
+      </details>
+
+      <details>
+        <summary>Почему антивирус ругается?</summary>
+        <p>
+          Файл не подписан сертификатом — подпись платная. Windows
+          SmartScreen на такие программы показывает предупреждение: «Подробнее»
+          → «Выполнить в любом случае». Если не доверяете — не запускайте,
+          это нормальная осторожность.
+        </p>
+      </details>
+
+      <details>
+        <summary>Где файлы и обновления?</summary>
+        <p>
+          Сборки и файл обновления лежат в репозитории
+          <a href="https://github.com/Winnigames2024-Original/mods/tree/main/narelauncher">mods/narelauncher</a>
+          — оттуда их и берёт <code>update.exe</code>.
+        </p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>NareLauncher · Winnigames2024</p>
+  <p class="small">
+    Minecraft — торговая марка Mojang Studios. Лаунчер с Mojang и Microsoft
+    не связан и ими не поддерживается.
+  </p>
+</footer>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>
