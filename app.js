@@ -91,6 +91,7 @@
 
   var MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
   var REMEMBER = "narelauncher-play";
+  var EXTRA_KEY = "narelauncher-extra";
 
   var versions = [];      // {id, type, when}
   var kind = "release";
@@ -103,8 +104,32 @@
     forge: "Forge",
     fabric: "Fabric",
     neoforge: "NeoForge",
-    quilt: "Quilt"
+    quilt: "Quilt",
+    visuals: "Forge Visuals"
   };
+
+  // Forge Visuals — сборка не для всех, поэтому кнопки по умолчанию нет.
+  // Открывается адресом с ?visuals=1 (или #visuals) и запоминается в браузере.
+  var extraOn = false;
+
+  function extraWanted() {
+    var where = (location.search + " " + location.hash).toLowerCase();
+    if (where.indexOf("visuals") >= 0) return true;
+
+    try { return localStorage.getItem(EXTRA_KEY) === "1"; }
+    catch (e) { return false; }
+  }
+
+  function unlockExtra() {
+    if (extraOn) return;
+    extraOn = true;
+
+    var chip = el("v-extra");
+    if (chip) chip.hidden = false;
+
+    try { localStorage.setItem(EXTRA_KEY, "1"); }
+    catch (e) { /* приватный режим — откроется по адресу */ }
+  }
 
   function el(id) { return document.getElementById(id); }
 
@@ -217,6 +242,8 @@
   }
 
   function setLoader(value) {
+    if (value === "visuals" && !extraOn) value = "forge";
+
     loader = LOADER_RU[value] ? value : "vanilla";
 
     var buttons = document.querySelectorAll("#v-loaders button");
@@ -291,9 +318,20 @@
   function wirePicker() {
     if (!el("v-list")) return;
 
+    if (extraWanted()) unlockExtra();
+
     var box = el("v-search");
     if (box) box.addEventListener("input", function () {
       search = this.value.trim().toLowerCase();
+
+      // слово в поиске тоже открывает скрытую кнопку
+      if (search.indexOf("visuals") >= 0)
+      {
+        unlockExtra();
+        this.value = "";
+        search = "";
+      }
+
       renderVersions();
     });
 
