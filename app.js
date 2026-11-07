@@ -87,7 +87,240 @@
     });
   }
 
+  /* ------------------------------------------------------- выбор версии */
+
+  var MANIFEST = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
+  var REMEMBER = "narelauncher-play";
+
+  var versions = [];      // {id, type, when}
+  var kind = "release";
+  var search = "";
+  var chosen = null;
+  var loader = "vanilla";
+
+  var LOADER_RU = {
+    vanilla: "без модов",
+    forge: "Forge",
+    fabric: "Fabric",
+    neoforge: "NeoForge",
+    quilt: "Quilt"
+  };
+
+  function el(id) { return document.getElementById(id); }
+
+  function year(iso) {
+    if (!iso) return "";
+    var d = new Date(iso);
+    return isNaN(d) ? "" : d.getFullYear();
+  }
+
+  function loadVersions() {
+    var list = el("v-list");
+    if (!list) return;
+
+    fetch(MANIFEST, { cache: "no-cache" })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        versions = (d.versions || []).map(function (v) {
+          return { id: v.id, type: v.type, when: v.releaseTime };
+        });
+        renderVersions();
+
+        // последняя, на которую смотрели, или свежий релиз
+        var saved = remembered();
+        var start = null;
+
+        if (saved && saved.version)
+            for (var i = 0; i < versions.length; i++)
+                if (versions[i].id === saved.version) start = versions[i];
+
+        if (!start && d.latest && d.latest.release)
+            for (var j = 0; j < versions.length; j++)
+                if (versions[j].id === d.latest.release) start = versions[j];
+
+        if (start) {
+          if (saved && saved.loader) setLoader(saved.loader);
+          choose(start);
+        }
+      })
+      .catch(function () {
+        list.innerHTML = "";
+        var note = document.createElement("li");
+        note.className = "vlist-note";
+        note.textContent = "Список версий не загрузился — проверьте интернет и обновите страницу.";
+        list.appendChild(note);
+      });
+  }
+
+  function matches(v) {
+    if (search && v.id.toLowerCase().indexOf(search) < 0) return false;
+
+    if (kind === "release") return v.type === "release";
+    if (kind === "snapshot") return v.type === "snapshot";
+    return v.type === "old_beta" || v.type === "old_alpha";
+  }
+
+  function renderVersions() {
+    var list = el("v-list");
+    if (!list) return;
+
+    list.innerHTML = "";
+    var shown = 0;
+
+    for (var i = 0; i < versions.length && shown < 300; i++) {
+      var v = versions[i];
+      if (!matches(v)) continue;
+      shown++;
+
+      var row = document.createElement("li");
+      row.setAttribute("role", "option");
+      row.setAttribute("aria-selected", chosen && chosen.id === v.id ? "true" : "false");
+      row.dataset.id = v.id;
+
+      var name = document.createElement("span");
+      name.textContent = v.id;
+      row.appendChild(name);
+
+      var when = document.createElement("span");
+      when.className = "when";
+      when.textContent = year(v.when);
+      row.appendChild(when);
+
+      (function (version) {
+        row.addEventListener("click", function () { choose(version); });
+      })(v);
+
+      list.appendChild(row);
+    }
+
+    if (shown === 0) {
+      var note = document.createElement("li");
+      note.className = "vlist-note";
+      note.textContent = "Ничего не нашлось — попробуйте другой запрос.";
+      list.appendChild(note);
+    }
+  }
+
+  function choose(v) {
+    chosen = v;
+
+    var rows = document.querySelectorAll("#v-list li[data-id]");
+    for (var i = 0; i < rows.length; i++)
+      rows[i].setAttribute("aria-selected", rows[i].dataset.id === v.id ? "true" : "false");
+
+    el("v-chosen-name").textContent = "Minecraft " + v.id;
+    el("v-chosen-sub").textContent = LOADER_RU[loader] + (v.type === "release" ? "" : " · " + v.type);
+    el("v-go").disabled = false;
+  }
+
+  function setLoader(value) {
+    loader = LOADER_RU[value] ? value : "vanilla";
+
+    var buttons = document.querySelectorAll("#v-loaders button");
+    for (var i = 0; i < buttons.length; i++)
+      buttons[i].setAttribute("aria-pressed", buttons[i].dataset.loader === loader ? "true" : "false");
+
+    if (chosen) choose(chosen);
+  }
+
+  function remembered() {
+    try { return JSON.parse(localStorage.getItem(REMEMBER) || "null"); }
+    catch (e) { return null; }
+  }
+
+  /* ---------------------------------------------------------- запуск */
+
+  function link() {
+    return "narelauncher://play?version=" + encodeURIComponent(chosen.id) +
+           "&loader=" + encodeURIComponent(loader);
+  }
+
+  function play() {
+    if (!chosen) return;
+
+    try {
+      localStorage.setItem(REMEMBER, JSON.stringify({ version: chosen.id, loader: loader }));
+    } catch (e) { /* приватный режим — просто не запомним */ }
+
+    var rescue = el("v-rescue");
+    if (rescue) rescue.hidden = true;
+
+    var left = false;
+    function away() { left = true; }
+
+    window.addEventListener("blur", away);
+    document.addEventListener("visibilitychange", away);
+
+    // сама попытка: если лаунчер есть, Windows переключится на него
+    try { location.href = link(); }
+    catch (e) { /* браузер не дал — разберёмся по таймеру */ }
+
+    setTimeout(function () {
+      window.removeEventListener("blur", away);
+      document.removeEventListener("visibilitychange", away);
+
+      if (left || document.hidden) return;   // лаунчер открылся
+      noLauncher();
+    }, 1800);
+  }
+
+  /* Лаунчер не отозвался: отдаём установщик и ждём человека обратно. */
+  function noLauncher() {
+    var rescue = el("v-rescue");
+    if (!rescue) return;
+
+    rescue.hidden = false;
+
+    var text = el("v-rescue-text");
+    if (text)
+      text.textContent = "Скачивание установщика началось. Поставьте его, вернитесь сюда и " +
+                         "нажмите «Продолжить» — Minecraft " + chosen.id + " (" +
+                         LOADER_RU[loader] + ") запустится сам.";
+
+    // браузер не умеет передавать выбранную версию внутрь скачанного файла,
+    // поэтому версию держим здесь и доигрываем после установки
+    var get = el("v-rescue-get");
+    if (get) { try { get.click(); } catch (e) { } }
+
+    try { rescue.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (e) { }
+  }
+
+  function wirePicker() {
+    if (!el("v-list")) return;
+
+    var box = el("v-search");
+    if (box) box.addEventListener("input", function () {
+      search = this.value.trim().toLowerCase();
+      renderVersions();
+    });
+
+    var kinds = document.querySelectorAll("#v-kinds button");
+    for (var i = 0; i < kinds.length; i++) {
+      kinds[i].addEventListener("click", function () {
+        kind = this.dataset.kind;
+        for (var j = 0; j < kinds.length; j++)
+          kinds[j].setAttribute("aria-pressed", kinds[j] === this ? "true" : "false");
+        renderVersions();
+      });
+    }
+
+    var loaders = document.querySelectorAll("#v-loaders button");
+    for (var k = 0; k < loaders.length; k++)
+      loaders[k].addEventListener("click", function () { setLoader(this.dataset.loader); });
+
+    el("v-go").addEventListener("click", play);
+
+    var retry = el("v-retry");
+    if (retry) retry.addEventListener("click", play);
+
+    loadVersions();
+  }
+
   showVersion();
   wireReveal();
   wireFigure();
+  wirePicker();
 })();

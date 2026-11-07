@@ -7,13 +7,14 @@
 <meta name="description" content="NareLauncher — лаунчер Minecraft: любые версии и свои сборки, аккаунты и скины, живая главная и автообновление. Ставится в пару кликов, без прав администратора.">
 <meta property="og:title" content="NareLauncher">
 <meta property="og:description" content="Любые версии и свои сборки, аккаунты и скины, автообновление. Ставится в пару кликов.">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
 <header class="top">
   <a class="mark" href="#"><span class="mark-dot" aria-hidden="true"></span>NareLauncher</a>
   <nav class="top-nav">
+    <a href="#play">Играть</a>
     <a href="#features">Возможности</a>
     <a href="#install">Установка</a>
     <a href="#faq">Вопросы</a>
@@ -80,6 +81,69 @@
               <div class="pick"><b>1.21.4</b><span>Forge</span></div>
               <div class="play">ИГРАТЬ</div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- play -->
+  <section id="play" class="band">
+    <h2>Играть прямо отсюда</h2>
+    <p class="band-lead">
+      Выберите версию и нажмите «Играть» — лаунчер откроется, скачает её и
+      запустит. Если лаунчера ещё нет, страница отдаст установщик и после
+      установки продолжит с того же места.
+    </p>
+
+    <div class="picker">
+      <div class="picker-side">
+        <label class="field">
+          <span class="field-icon" aria-hidden="true">⌕</span>
+          <input id="v-search" type="search" placeholder="Версия: 1.21.4, 1.8.9, 1.7.10…"
+                 autocomplete="off" spellcheck="false">
+        </label>
+
+        <div class="chips" id="v-kinds" role="group" aria-label="Какие версии показывать">
+          <button type="button" data-kind="release" aria-pressed="true">Релизы</button>
+          <button type="button" data-kind="snapshot" aria-pressed="false">Снапшоты</button>
+          <button type="button" data-kind="old" aria-pressed="false">Старые</button>
+        </div>
+
+        <ul id="v-list" class="vlist" role="listbox" aria-label="Версия Minecraft">
+          <li class="vlist-note">Загружаю список версий…</li>
+        </ul>
+      </div>
+
+      <div class="picker-main">
+        <p class="pick-label">Загрузчик модов</p>
+        <div class="chips loaders" id="v-loaders" role="group" aria-label="Загрузчик модов">
+          <button type="button" data-loader="vanilla" aria-pressed="true">Без модов</button>
+          <button type="button" data-loader="forge" aria-pressed="false">Forge</button>
+          <button type="button" data-loader="fabric" aria-pressed="false">Fabric</button>
+          <button type="button" data-loader="neoforge" aria-pressed="false">NeoForge</button>
+          <button type="button" data-loader="quilt" aria-pressed="false">Quilt</button>
+        </div>
+
+        <div class="chosen" id="v-chosen">
+          <b id="v-chosen-name">версия не выбрана</b>
+          <span id="v-chosen-sub">выберите слева</span>
+        </div>
+
+        <button type="button" class="play-btn" id="v-go" disabled>ИГРАТЬ</button>
+
+        <p class="pick-note" id="v-note">
+          Ник спросит сам лаунчер, если вы ещё не заводили аккаунт.
+        </p>
+
+        <!-- показывается, если лаунчер не отозвался -->
+        <div class="rescue" id="v-rescue" hidden>
+          <b>Похоже, лаунчера ещё нет</b>
+          <p id="v-rescue-text">Скачивание установщика началось. Поставьте его и вернитесь сюда.</p>
+          <div class="rescue-row">
+            <a class="rescue-get" id="v-rescue-get"
+               href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/nareinstaller/NareInstaller.exe">Скачать установщик</a>
+            <button type="button" class="rescue-go" id="v-retry">Продолжить</button>
           </div>
         </div>
       </div>
@@ -238,6 +302,6 @@
   </p>
 </footer>
 
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>
