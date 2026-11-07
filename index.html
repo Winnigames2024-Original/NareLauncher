@@ -7,7 +7,7 @@
 <meta name="description" content="NareLauncher — лаунчер Minecraft: любые версии и свои сборки, аккаунты и скины, живая главная и автообновление. Ставится в пару кликов, без прав администратора.">
 <meta property="og:title" content="NareLauncher">
 <meta property="og:description" content="Любые версии и свои сборки, аккаунты и скины, автообновление. Ставится в пару кликов.">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -40,11 +40,6 @@
            href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/nareinstaller/NareInstaller.exe">
           <span>Скачать установщик</span>
           <small id="dl-main-meta">NareInstaller.exe · поставит лаунчер и ярлыки</small>
-        </a>
-        <a class="btn" id="dl-plain"
-           href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/narelauncher/NareLauncher.exe">
-          <span>Только лаунчер</span>
-          <small id="dl-plain-meta">версия загружается…</small>
         </a>
       </div>
 
@@ -213,16 +208,6 @@
       </details>
 
       <details>
-        <summary>Можно без установщика?</summary>
-        <p>
-          Да, берите
-          <a href="https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/narelauncher/NareLauncher.exe">NareLauncher.exe</a>
-          и запускайте откуда угодно. Только тогда не будет ярлыков и
-          автообновления — обновлять придётся руками.
-        </p>
-      </details>
-
-      <details>
         <summary>Почему антивирус ругается?</summary>
         <p>
           Файл не подписан сертификатом — подпись платная. Windows
@@ -233,11 +218,11 @@
       </details>
 
       <details>
-        <summary>Где файлы и обновления?</summary>
+        <summary>Как обновляется лаунчер?</summary>
         <p>
-          Сборки и файл обновления лежат в репозитории
-          <a href="https://github.com/Winnigames2024-Original/mods/tree/main/narelauncher">mods/narelauncher</a>
-          — оттуда их и берёт <code>update.exe</code>.
+          Сам. Рядом с ним установщик кладёт <code>update.exe</code> — при
+          запуске он проверяет, не вышла ли новая версия, и подменяет
+          лаунчер. Скачивать что-то заново не нужно.
         </p>
       </details>
     </div>
@@ -253,6 +238,6 @@
   </p>
 </footer>
 
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

@@ -1,12 +1,14 @@
 /* NareLauncher — страница лаунчера.
-   Версию и размер берём из того же update.json, по которому обновляется
-   сам лаунчер: на странице не будет цифр, разошедшихся с реальностью. */
+   Версию и размер берём из тех же json, по которым обновляется
+   лаунчер: на странице не будет цифр, разошедшихся с реальностью. */
 
 (function () {
   "use strict";
 
-  var MANIFEST =
+  var LAUNCHER =
     "https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/narelauncher/update.json";
+  var INSTALLER =
+    "https://raw.githubusercontent.com/Winnigames2024-Original/mods/main/nareinstaller/install.json";
 
   function size(bytes) {
     if (!bytes) return "";
@@ -14,29 +16,33 @@
     return kb < 1024 ? Math.round(kb) + " КБ" : (kb / 1024).toFixed(1) + " МБ";
   }
 
+  function grab(url) {
+    return fetch(url, { cache: "no-cache" }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    });
+  }
+
+  /* Подпись под кнопкой: сколько весит установщик и какую версию лаунчера
+     он поставит. Обе цифры берутся из тех же json, по которым всё и
+     обновляется, — руками их на странице править не надо. */
   function showVersion() {
-    var plain = document.getElementById("dl-plain-meta");
-    var main = document.getElementById("dl-main-meta");
-    if (!plain) return;
+    var meta = document.getElementById("dl-main-meta");
+    if (!meta) return;
 
-    fetch(MANIFEST, { cache: "no-cache" })
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.status);
-        return r.json();
-      })
-      .then(function (d) {
-        var parts = [];
-        if (d.version) parts.push(d.version);
-        if (d.size) parts.push(size(d.size));
-        plain.textContent = "NareLauncher.exe" + (parts.length ? " · " + parts.join(" · ") : "");
+    Promise.all([
+      grab(INSTALLER).catch(function () { return null; }),
+      grab(LAUNCHER).catch(function () { return null; })
+    ]).then(function (both) {
+      var inst = both[0], launcher = both[1];
+      var parts = ["NareInstaller.exe"];
 
-        if (main && d.version)
-          main.textContent = "NareInstaller.exe · поставит " + d.version + " и ярлыки";
-      })
-      .catch(function () {
-        // нет сети или GitHub недоступен — просто оставляем честную подпись
-        plain.textContent = "NareLauncher.exe · если ставите вручную";
-      });
+      if (inst && inst.size) parts.push(size(inst.size));
+      if (launcher && launcher.version) parts.push("поставит " + launcher.version);
+      else parts.push("поставит лаунчер и ярлыки");
+
+      meta.textContent = parts.join(" · ");
+    });
   }
 
   function wireReveal() {
